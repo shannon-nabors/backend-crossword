@@ -1,3 +1,3 @@
 class ClueCellSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :cell_id, :clue_id, :position
 end
