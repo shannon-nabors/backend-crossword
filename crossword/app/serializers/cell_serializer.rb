@@ -3,9 +3,11 @@ class CellSerializer < ActiveModel::Serializer
   belongs_to :puzzle
 
   def fellows(dir)
-    clue = object.clues.select{ |c| c.direction == dir }[0]
-    cells = object.puzzle.cells.select{ |c| c.clues.include?(clue) && c != object}
-    return cells.map(&:id)
+    if !object.clues.nil?
+      clue = object.clues.select{ |c| c.direction == dir }[0]
+      cells = object.puzzle.cells.select{ |c| c.clues.include?(clue) && c != object}
+      return cells.map(&:id)
+    end
   end
 
   def fellow_across

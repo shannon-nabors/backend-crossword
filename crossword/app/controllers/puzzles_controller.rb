@@ -1,3 +1,4 @@
+require 'byebug'
 class PuzzlesController < ApplicationController
 
   def index
@@ -28,9 +29,50 @@ class PuzzlesController < ApplicationController
     render json: puzzle
   end
 
+  def setup
+    num = 1
+    puzzle = Puzzle.find(params[:id])
+    # byebug
+    # puzzle.update(id: puzzle_params[:id], title: puzzle_params[:title])
+
+    puzzle_params[:cells].each do |cell|
+      Cell.find(cell[:id]).update(cell)
+    end
+
+    cells = puzzle.cells.sort_by{ |cell| cell.id }
+
+    cells.each do |cell|
+      left = cells.find{ |c| c.row == cell.row && c.column == cell.column - 1}
+
+      top = cells.find{ |c| c.column == cell.column  && c.row == cell.row - 1}
+
+      if (cell.shaded == false) && ((cell.row == 1 || cell.column == 1) || left.shaded == true || top.shaded == true)
+        if cell.column == 1 || left.shaded == true
+          cl = Clue.create(number: num, direction: "across")
+          ClueCell.create(clue: cl, cell: cell)
+        end
+
+        if cell.row == 1 || top.shaded == true
+          cl = Clue.create(number: num, direction: "down")
+          ClueCell.create(clue: cl, cell: cell)
+        end
+
+        Cell.find(cell.id).update(number: num)
+        num += 1
+      end
+    end
+    render json: Puzzle.find(params[:id])
+  end
+
   def cells
     @puzzle = Puzzle.find(params[:id])
     render json: @puzzle.cells
+  end
+
+  private
+
+  def puzzle_params
+    params.require(:puzzle).permit(:id, :title, cells:[:id, :number, :letter, :shaded, :row, :column])
   end
 
 end
