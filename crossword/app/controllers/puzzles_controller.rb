@@ -6,10 +6,12 @@ class PuzzlesController < ApplicationController
     render json: @puzzles
   end
 
+
   def show
     @puzzle = Puzzle.find(params[:id])
     render json: @puzzle
   end
+
 
   def create
     num = (params[:number]).to_i
@@ -29,11 +31,10 @@ class PuzzlesController < ApplicationController
     render json: puzzle
   end
 
+
   def setup
     num = 1
     puzzle = Puzzle.find(params[:id])
-    # byebug
-    # puzzle.update(id: puzzle_params[:id], title: puzzle_params[:title])
 
     puzzle_params[:cells].each do |cell|
       Cell.find(cell[:id]).update(cell)
@@ -64,10 +65,27 @@ class PuzzlesController < ApplicationController
     render json: Puzzle.find(params[:id])
   end
 
+
+  def enter
+    puzzle = Puzzle.find(params[:id])
+
+    puzzle_params[:across_clues].each do |clue|
+      Clue.find(clue[:id]).update(clue)
+    end
+
+    puzzle_params[:down_clues].each do |clue|
+      Clue.find(clue[:id]).update(clue)
+    end
+
+    render json: Puzzle.find(params[:id])
+  end
+
+
   def cells
     @puzzle = Puzzle.find(params[:id])
     render json: @puzzle.cells
   end
+
 
   def destroy
     Puzzle.destroy(params[:id])
@@ -76,7 +94,7 @@ class PuzzlesController < ApplicationController
   private
 
   def puzzle_params
-    params.require(:puzzle).permit(:id, :title, cells:[:id, :number, :letter, :shaded, :row, :column])
+    params.require(:puzzle).permit(:id, :title, cells:[:id, :number, :letter, :shaded, :row, :column], across_clues:[:id, :number, :direction, :content], down_clues:[:id, :number, :direction, :content])
   end
 
 end

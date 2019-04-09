@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get "puzzles/:id/cells", to: "puzzles#cells"
   post "puzzles/create/:number", to: "puzzles#create"
   patch "puzzles/setup/:id", to: "puzzles#setup"
+  patch "puzzles/enter/:id", to: "puzzles#enter"
 end
