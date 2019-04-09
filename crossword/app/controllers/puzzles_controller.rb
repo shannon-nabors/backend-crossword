@@ -98,7 +98,7 @@ class PuzzlesController < ApplicationController
           ClueCell.create(clue: down_clue, cell: cell)
         end
 
-        
+
       end
 
     end
@@ -115,6 +115,10 @@ class PuzzlesController < ApplicationController
 
     puzzle_params[:down_clues].each do |clue|
       Clue.find(clue[:id]).update(clue)
+    end
+
+    puzzle_params[:cells].each do |cell|
+      Cell.find(cell[:id]).update(cell)
     end
 
     render json: Puzzle.find(params[:id])
