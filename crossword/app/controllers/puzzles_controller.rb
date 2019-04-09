@@ -48,12 +48,12 @@ class PuzzlesController < ApplicationController
 
       if (cell.shaded == false) && ((cell.row == 1 || cell.column == 1) || left.shaded == true || top.shaded == true)
         if cell.column == 1 || left.shaded == true
-          cl = Clue.create(number: num, direction: "across")
+          cl = Clue.create(number: num, direction: "across", puzzle_id: params[:id])
           ClueCell.create(clue: cl, cell: cell)
         end
 
         if cell.row == 1 || top.shaded == true
-          cl = Clue.create(number: num, direction: "down")
+          cl = Clue.create(number: num, direction: "down", puzzle_id: params[:id])
           ClueCell.create(clue: cl, cell: cell)
         end
 
@@ -67,6 +67,10 @@ class PuzzlesController < ApplicationController
   def cells
     @puzzle = Puzzle.find(params[:id])
     render json: @puzzle.cells
+  end
+
+  def destroy
+    Puzzle.destroy(params[:id])
   end
 
   private
