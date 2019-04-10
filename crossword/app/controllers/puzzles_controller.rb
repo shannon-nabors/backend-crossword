@@ -19,7 +19,7 @@ class PuzzlesController < ApplicationController
       user_solves.include?(puz[:id]) ? @solved_puzzles.push(puz) : @unsolved_puzzles.push(puz)
     end
 
-    @user_puzzles = allPuzzles.select{ |puz| puz[:constructor_id] === params[:id] }
+    @user_puzzles = allPuzzles.select{ |puz| puz[:constructor_id] === params[:id].to_i }
 
     render json: { solved_puzzles: @solved_puzzles, unsolved_puzzles: @unsolved_puzzles, user_puzzles: @user_puzzles }
 

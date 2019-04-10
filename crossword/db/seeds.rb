@@ -2,6 +2,8 @@
 
 User.create(name: "Shannon Nabors", username: "snabes", email: "shannon.nabors@gmail.com", password: "shannon")
 
+User.create(name: "Artem Metelskyi", username: "Metart", email: "artemmetelskyi@gmail.com", password: "artem")
+
 Puzzle.create(title: "Pregaming", constructor_id: 1)
 
 Cell.create(shaded: true, row: 1, column: 1, puzzle_id: 1)
