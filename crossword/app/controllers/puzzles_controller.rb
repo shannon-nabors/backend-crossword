@@ -133,7 +133,8 @@ class PuzzlesController < ApplicationController
       Cell.find(cell[:id]).update(cell)
     end
 
-    render json: Puzzle.find(params[:id])
+    puzzle.update(title: puzzle_params[:title])
+    render json: puzzle
   end
 
 
