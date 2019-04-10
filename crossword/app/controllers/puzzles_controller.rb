@@ -2,16 +2,28 @@ require 'byebug'
 class PuzzlesController < ApplicationController
 
   def index
-    @puzzles = Puzzle.all
-    render json: @puzzles
+
+    allPuzzles = Puzzle.all.map do |puz|
+      cells_hash = puz.cells.map do |cell|
+        {id: cell.id, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
+      end
+      {id: puz.id, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash}
+    end
+
+    user_solves = Solve.all.select{ |s| s.solver_id == params[:id].to_i }.map(&:puzzle_id)
+
+    @solved_puzzles = []
+    @unsolved_puzzles = []
+
+    allPuzzles.each do |puz|
+      user_solves.include?(puz[:id]) ? @solved_puzzles.push(puz) : @unsolved_puzzles.push(puz)
+    end
+
+    @user_puzzles = allPuzzles.select{ |puz| puz[:constructor_id] === params[:id] }
+
+    render json: { solved_puzzles: @solved_puzzles, unsolved_puzzles: @unsolved_puzzles, user_puzzles: @user_puzzles }
+
   end
-
-
-  def show
-    @puzzle = Puzzle.find(params[:id])
-    render json: @puzzle
-  end
-
 
   def create
     num = (params[:number]).to_i
