@@ -14,12 +14,22 @@ class PuzzlesController < ApplicationController
 
     @solved_puzzles = []
     @unsolved_puzzles = []
+    @user_puzzles = []
 
     allPuzzles.each do |puz|
-      user_solves.include?(puz[:id]) ? @solved_puzzles.push(puz) : @unsolved_puzzles.push(puz)
+      # user_solves.include?(puz[:id]) ? @solved_puzzles.push(puz) : @unsolved_puzzles.push(puz)
+
+      if puz[:constructor_id] == params[:id].to_i
+        @user_puzzles.push(puz)
+      elsif user_solves.include?(puz[:id])
+        @solved_puzzles.push(puz)
+      else
+        @unsolved_puzzles.push(puz)
+      end
+
     end
 
-    @user_puzzles = allPuzzles.select{ |puz| puz[:constructor_id] === params[:id].to_i }
+    # @user_puzzles = allPuzzles.select{ |puz| puz[:constructor_id] === params[:id].to_i }
 
     render json: { solved_puzzles: @solved_puzzles, unsolved_puzzles: @unsolved_puzzles, user_puzzles: @user_puzzles }
 
