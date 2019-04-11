@@ -27,8 +27,8 @@ class PuzzlesController < ApplicationController
 
   def create
     num = (params[:number]).to_i
-    user = User.find(1)
-    puzzle = Puzzle.create(constructor: user)
+    user = params[:newPuzzle][:constructor][:user]
+    puzzle = Puzzle.create(constructor_id: user[:id])
 
     i = 1
     while i <= (num * num)
@@ -151,7 +151,7 @@ class PuzzlesController < ApplicationController
   private
 
   def puzzle_params
-    params.require(:puzzle).permit(:id, :title, cells:[:id, :number, :letter, :shaded, :row, :column], across_clues:[:id, :number, :direction, :content], down_clues:[:id, :number, :direction, :content])
+    params.require(:puzzle).permit(:id, :title, cells:[:id, :number, :letter, :shaded, :row, :column], across_clues:[:id, :number, :direction, :content], down_clues:[:id, :number, :direction, :content], constructor:[user:[:name, :email, :username, :id]])
   end
 
 end
