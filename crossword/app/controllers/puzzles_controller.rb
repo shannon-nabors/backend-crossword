@@ -17,8 +17,6 @@ class PuzzlesController < ApplicationController
     @user_puzzles = []
 
     allPuzzles.each do |puz|
-      # user_solves.include?(puz[:id]) ? @solved_puzzles.push(puz) : @unsolved_puzzles.push(puz)
-
       if puz[:constructor_id] == params[:id].to_i
         @user_puzzles.push(puz)
       elsif user_solves.include?(puz[:id])
@@ -26,10 +24,7 @@ class PuzzlesController < ApplicationController
       else
         @unsolved_puzzles.push(puz)
       end
-
     end
-
-    # @user_puzzles = allPuzzles.select{ |puz| puz[:constructor_id] === params[:id].to_i }
 
     render json: { solved_puzzles: @solved_puzzles, unsolved_puzzles: @unsolved_puzzles, user_puzzles: @user_puzzles }
 
@@ -37,7 +32,7 @@ class PuzzlesController < ApplicationController
 
   def create
     num = (params[:number]).to_i
-    user = params[:newPuzzle][:constructor][:user]
+    user = params[:newPuzzle][:constructor]
     puzzle = Puzzle.create(constructor_id: user[:id])
 
     i = 1
