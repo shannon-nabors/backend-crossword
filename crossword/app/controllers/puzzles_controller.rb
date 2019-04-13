@@ -30,6 +30,17 @@ class PuzzlesController < ApplicationController
 
   end
 
+  def anonymous_index
+    allPuzzles = Puzzle.all.map do |puz|
+      cells_hash = puz.cells.map do |cell|
+        {id: cell.id, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
+      end
+      {id: puz.id, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash}
+    end
+
+    render json: { solved_puzzles: [], unsolved_puzzles: allPuzzles, user_puzzles: [] }
+  end
+
   def create
     num = (params[:number]).to_i
     user = params[:newPuzzle][:constructor]
