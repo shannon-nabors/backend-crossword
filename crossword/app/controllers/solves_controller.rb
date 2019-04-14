@@ -13,7 +13,7 @@ class SolvesController < ApplicationController
   private
 
   def solve_params
-    params.permit(:puzzle_id, :solver_id)
+    params.permit(:puzzle_id, :solver_id, :time)
   end
 
 end
