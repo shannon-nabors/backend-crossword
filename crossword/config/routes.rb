@@ -5,7 +5,8 @@ Rails.application.routes.draw do
 
   get "puzzles/user/:id", to: "puzzles#index"
   get "puzzles", to: "puzzles#anonymous_index"
-  get "solves/user/:id", to: "solves#index"
+  get "solves/user/:id", to: "solves#by_user"
+  get "solves/puzzle/:id", to: "solves#by_puzzle"
   post "puzzles/create/:number", to: "puzzles#create"
   patch "puzzles/setup/:id", to: "puzzles#setup"
   patch "puzzles/enter/:id", to: "puzzles#enter"

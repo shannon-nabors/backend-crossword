@@ -1,8 +1,13 @@
 require 'byebug'
 class SolvesController < ApplicationController
 
-  def index
+  def by_user
     @solves = Solve.select{ |s| s.solver_id == params[:id].to_i}
+    render json: @solves
+  end
+
+  def by_puzzle
+    @solves = Solve.select{ |s| s.puzzle_id == params[:id].to_i }
     render json: @solves
   end
 
