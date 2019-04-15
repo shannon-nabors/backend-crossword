@@ -7,7 +7,7 @@ class SolvesController < ApplicationController
   end
 
   def by_puzzle
-    @solves = Solve.select{ |s| s.puzzle_id == params[:id].to_i }
+    @solves = Solve.select{ |s| s.puzzle_id == params[:id].to_i }.sort_by{ |s| s.time }
     render json: @solves
   end
 
