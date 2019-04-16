@@ -6,4 +6,12 @@ class User < ApplicationRecord
     return self.first_name + " " + self.last_name
   end
 
+  def all_solves
+    return Solve.all.select{ |s| s.solver_id == self.id }
+  end
+
+  def all_puzzles
+    return Puzzle.all.select{ |p| p.constructor_id == self.id }
+  end
+
 end
