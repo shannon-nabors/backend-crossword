@@ -22,7 +22,7 @@ class FavoritesController < ApplicationController
   private
 
   def favorite_params
-    params.permit(puzzle_id, user_id)
+    params.permit(:puzzle_id, :user_id)
   end
 
 end
