@@ -5,6 +5,7 @@ class Puzzle < ApplicationRecord
   has_many :solvers, through: :solves, class_name: "User"
   has_many :cells, dependent: :destroy
   has_many :clues, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
   def correct_letters
     letters = {}
