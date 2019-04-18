@@ -40,4 +40,8 @@ class Puzzle < ApplicationRecord
     end
   end
 
+  def total_favs
+    return self.favorites.length
+  end
+
 end

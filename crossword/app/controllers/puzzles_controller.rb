@@ -7,7 +7,7 @@ class PuzzlesController < ApplicationController
       cells_hash = puz.cells.map do |cell|
         {id: cell.id, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
       end
-      {id: puz.id, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash, average: puz.average_solve_time}
+      {id: puz.id, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash, average: puz.average_solve_time, favorites: puz.total_favs}
     end
 
     user_solves = Solve.all.select{ |s| s.solver_id == params[:id].to_i }.map(&:puzzle_id)
@@ -35,7 +35,7 @@ class PuzzlesController < ApplicationController
       cells_hash = puz.cells.map do |cell|
         {id: cell.id, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
       end
-      {id: puz.id, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash}
+      {id: puz.id, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash, average: puz.average_solve_time, favorites: puz.total_favs}
     end
 
     render json: { solved_puzzles: [], unsolved_puzzles: allPuzzles, user_puzzles: [] }
