@@ -65,6 +65,7 @@ class PuzzlesController < ApplicationController
     puzzle = Puzzle.find(params[:id])
 
     puzzle_params[:cells].each do |cell|
+      cell[:number] = nil
       Cell.find(cell[:id]).update(cell)
     end
 
