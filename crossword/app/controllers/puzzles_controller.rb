@@ -63,6 +63,8 @@ class PuzzlesController < ApplicationController
   def setup
     num = 1
     puzzle = Puzzle.find(params[:id])
+    ClueCell.where(puzzle_id: params[:id]).destroy_all
+    Clue.where(puzzle_id: params[:id]).destroy_all
 
     puzzle_params[:cells].each do |cell|
       cell[:number] = nil
@@ -83,12 +85,12 @@ class PuzzlesController < ApplicationController
 
         if cell.column == 1 || left.shaded == true
           cl = Clue.create(number: num, direction: "across", puzzle_id: params[:id])
-          ClueCell.create(clue: cl, cell: cell)
+          ClueCell.create(clue: cl, cell: cell, puzzle_id: params[:id])
         end
 
         if cell.row == 1 || top.shaded == true
           cl = Clue.create(number: num, direction: "down", puzzle_id: params[:id])
-          ClueCell.create(clue: cl, cell: cell)
+          ClueCell.create(clue: cl, cell: cell, puzzle_id: params[:id])
         end
 
         Cell.find(cell.id).update(number: num)
@@ -121,11 +123,11 @@ class PuzzlesController < ApplicationController
 
 
         if !cell.clues.include?(across_clue)
-          ClueCell.create(clue: across_clue, cell: cell)
+          ClueCell.create(clue: across_clue, cell: cell, puzzle_id: params[:id])
         end
 
         if !cell.clues.include?(down_clue)
-          ClueCell.create(clue: down_clue, cell: cell)
+          ClueCell.create(clue: down_clue, cell: cell, puzzle_id: params[:id])
         end
 
 

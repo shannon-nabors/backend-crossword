@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_144447) do
+ActiveRecord::Schema.define(version: 2019_06_21_175045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_144447) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "puzzle_id"
     t.index ["cell_id"], name: "index_clue_cells_on_cell_id"
     t.index ["clue_id"], name: "index_clue_cells_on_clue_id"
   end
