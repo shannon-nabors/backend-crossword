@@ -71,6 +71,8 @@ class PuzzlesController < ApplicationController
       Cell.find(cell[:id]).update(cell)
     end
 
+    puzzle.clues.destroy_all
+
     # Sort backend puzzle's cells so they're in order of id
     # Find the first cell and the total number of rows/columns
     cells = puzzle.cells.sort_by{ |cell| cell.id }
