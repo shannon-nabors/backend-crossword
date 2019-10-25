@@ -61,29 +61,40 @@ class PuzzlesController < ApplicationController
 
 
   def setup
+    # Set counter for numbering, find puzzle instance
     num = 1
     puzzle = Puzzle.find(params[:id])
 
+    # Iterate through the cells array received as params
     puzzle_params[:cells].each do |cell|
+      # For each one, find the matching backend cell & update to match frontend
       Cell.find(cell[:id]).update(cell)
     end
 
+    # Sort backend puzzle's cells so they're in order of id
+    # Find the first cell and the total number of rows/columns
     cells = puzzle.cells.sort_by{ |cell| cell.id }
     find_index = cells[0].id
     rows = cells.last.row
 
     cells.each do |cell|
+      # Find the cell to the left of this one, if it exists
       left = cells.find{ |c| c.row == cell.row && c.column == cell.column - 1}
 
+      # Find the cell above this one, if it exists
       top = cells.find{ |c| c.column == cell.column  && c.row == cell.row - 1}
 
+      # If the cell is unshaded AND it's either in the first row or column,
+      # or comes after or below a shaded cell (i.e. any cell that should be numbered)
       if (cell.shaded == false) && ((cell.row == 1 || cell.column == 1) || left.shaded == true || top.shaded == true)
 
+        # if the cell is the beginning of an ACROSS clue
         if cell.column == 1 || left.shaded == true
           cl = Clue.create(number: num, direction: "across", puzzle_id: params[:id])
           ClueCell.create(clue: cl, cell: cell)
         end
 
+        # if the cell is the beginning of a DOWN clue
         if cell.row == 1 || top.shaded == true
           cl = Clue.create(number: num, direction: "down", puzzle_id: params[:id])
           ClueCell.create(clue: cl, cell: cell)
@@ -91,29 +102,48 @@ class PuzzlesController < ApplicationController
 
         Cell.find(cell.id).update(number: num)
         num += 1
+      else
+        if cell.number
+          Cell.find(cell.id).update(number: nil)
+        end
       end
 
+      # If the cell is unshaded
       if cell.shaded == false
+        # Find the index of the cell within puzzle.cells
         index = cell.id - find_index
 
+        # Find what cell is the starter cell of this cell's across/down words:
+
+        # Iterate backwards through the puzzle's cells starting with this one
         while index >= 0
           if cells[index].shaded || cells[index].column == 1
+            # if this cell is shaded, word should start in the cell to the right
+            # else, the word starts in this cell
             cells[index].shaded ? left_word_start = cells[index + 1] : left_word_start = cells[index]
           end
+          # Stop if this cell is shaded or in the first column
           break if cells[index].shaded || cells[index].column == 1
           index = index - 1
         end
 
+        # Reset index
         index = cell.id - find_index
 
+        # Iterate backwards through the puzzle's cells starting with this one
         while index >= 0
           if cells[index].shaded || cells[index].row == 1
+            # if this cell is shaded, word should start in the cell above
+            # else, the word starts in this cell
             cells[index].shaded ? top_word_start = cells[index + rows] : top_word_start = cells[index]
           end
+          # Stop if this cell is shaded or in the first row
           break if cells[index].shaded || cells[index].row == 1
           index = index - rows
         end
 
+        # Set the across and down clues that are associated with this cell
+        # according to the clues associated with the starter cells found above
         across_clue = left_word_start.clues.find{ |c| c.direction == "across"}
         down_clue = top_word_start.clues.find{ |c| c.direction == "down"}
 
