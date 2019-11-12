@@ -64,6 +64,8 @@ class PuzzlesController < ApplicationController
     # Set counter for numbering, find puzzle instance
     num = 1
     puzzle = Puzzle.find(params[:id])
+    
+    puzzle.clues.destroy_all
 
     # Iterate through the cells array received as params
     puzzle_params[:cells].each do |cell|
@@ -71,7 +73,6 @@ class PuzzlesController < ApplicationController
       Cell.find(cell[:id]).update(cell)
     end
 
-    puzzle.clues.destroy_all
 
     # Sort backend puzzle's cells so they're in order of id
     # Find the first cell and the total number of rows/columns

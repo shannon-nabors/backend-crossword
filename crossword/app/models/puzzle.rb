@@ -18,11 +18,13 @@ class Puzzle < ApplicationRecord
   end
 
   def across_clues
-    return self.clues.select{ |c| c.direction == "across"}
+    clues = self.clues.select{ |c| c.direction == "across"}
+    return clues.sort_by { |clue| clue.id }
   end
 
   def down_clues
-    return self.clues.select{ |c| c.direction == "down"}
+    clues = self.clues.select{ |c| c.direction == "down"}
+    return clues.sort_by { |clue| clue.id }
   end
 
   def average_solve_time
