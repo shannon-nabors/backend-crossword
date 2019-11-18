@@ -2,6 +2,7 @@ class CreatePuzzles < ActiveRecord::Migration[5.2]
   def change
     create_table :puzzles do |t|
       t.string :title
+      t.boolean :complete
       t.integer :constructor_id
       
       t.timestamps

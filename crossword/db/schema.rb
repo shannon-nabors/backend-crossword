@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_144447) do
 
   create_table "puzzles", force: :cascade do |t|
     t.string "title"
+    t.boolean "complete"
     t.integer "constructor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

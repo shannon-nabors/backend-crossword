@@ -7,7 +7,7 @@ class PuzzlesController < ApplicationController
       cells_hash = puz.cells.map do |cell|
         {id: cell.id, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
       end
-      {id: puz.id, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash, average: puz.average_solve_time, favorites: puz.total_favs}
+      {id: puz.id, complete: puz.complete, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash, average: puz.average_solve_time, favorites: puz.total_favs}
     end
 
     user_solves = Solve.all.select{ |s| s.solver_id == params[:id].to_i }.map(&:puzzle_id)
@@ -15,10 +15,13 @@ class PuzzlesController < ApplicationController
     @solved_puzzles = []
     @unsolved_puzzles = []
     @user_puzzles = []
+    @saved_puzzles = []
 
     allPuzzles.each do |puz|
-      if puz[:constructor_id] == params[:id].to_i
+      if puz[:constructor_id] == params[:id].to_i && puz[:complete]
         @user_puzzles.push(puz)
+      elsif puz[:constructor_id] == params[:id].to_i && !puz[:complete]
+        @saved_puzzles.push(puz)
       elsif user_solves.include?(puz[:id])
         @solved_puzzles.push(puz)
       else
@@ -26,7 +29,7 @@ class PuzzlesController < ApplicationController
       end
     end
 
-    render json: { solved_puzzles: @solved_puzzles, unsolved_puzzles: @unsolved_puzzles, user_puzzles: @user_puzzles }
+    render json: { solved_puzzles: @solved_puzzles, unsolved_puzzles: @unsolved_puzzles, user_puzzles: @user_puzzles, saved_puzzles: @saved_puzzles }
 
   end
 
@@ -44,7 +47,7 @@ class PuzzlesController < ApplicationController
   def create
     num = (params[:number]).to_i
     user = params[:newPuzzle][:constructor]
-    puzzle = Puzzle.create(constructor_id: user[:id])
+    puzzle = Puzzle.create(constructor_id: user[:id], complete: false)
 
     i = 1
     while i <= (num * num)
@@ -182,7 +185,7 @@ class PuzzlesController < ApplicationController
       Cell.find(cell[:id]).update(cell)
     end
 
-    puzzle.update(title: puzzle_params[:title])
+    puzzle.update(title: puzzle_params[:title], complete: true)
     render json: puzzle
   end
 
