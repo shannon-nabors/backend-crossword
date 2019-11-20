@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get "favorites/puzzle/:id", to: "favorites#by_puzzle"
   post "puzzles/create/:number", to: "puzzles#create"
   patch "puzzles/setup/:id", to: "puzzles#setup"
+  patch "puzzles/letter/:id", to: "puzzles#letter"
   patch "puzzles/enter/:id", to: "puzzles#enter"
   post "users/login", to: "users#login"
 end

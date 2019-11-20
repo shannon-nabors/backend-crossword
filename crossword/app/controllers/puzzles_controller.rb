@@ -28,7 +28,7 @@ class PuzzlesController < ApplicationController
         @unsolved_puzzles.push(puz)
       end
     end
-
+    
     render json: { solved_puzzles: @solved_puzzles, unsolved_puzzles: @unsolved_puzzles, user_puzzles: @user_puzzles, saved_puzzles: @saved_puzzles }
 
   end
@@ -169,6 +169,15 @@ class PuzzlesController < ApplicationController
     render json: Puzzle.find(params[:id])
   end
 
+  def letter
+    puzzle = Puzzle.find(params[:id])
+
+    puzzle_params[:cells].each do |cell|
+      Cell.find(cell[:id]).update(cell)
+    end
+
+    render json: puzzle
+  end
 
   def enter
     puzzle = Puzzle.find(params[:id])
