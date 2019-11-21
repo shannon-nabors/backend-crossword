@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post "puzzles/create/:number", to: "puzzles#create"
   patch "puzzles/setup/:id", to: "puzzles#setup"
   patch "puzzles/letter/:id", to: "puzzles#letter"
+  patch "puzzles/clue/:id", to: "puzzles#clue"
   patch "puzzles/enter/:id", to: "puzzles#enter"
   post "users/login", to: "users#login"
 end

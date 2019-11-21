@@ -179,6 +179,21 @@ class PuzzlesController < ApplicationController
     render json: puzzle
   end
 
+  def clue
+    puzzle = Puzzle.find(params[:id])
+
+    puzzle_params[:across_clues].each do |clue|
+      Clue.find(clue[:id]).update(clue)
+    end
+
+    puzzle_params[:down_clues].each do |clue|
+      Clue.find(clue[:id]).update(clue)
+    end
+
+    puzzle.update(title: puzzle_params[:title])
+    render json: puzzle
+  end
+
   def enter
     puzzle = Puzzle.find(params[:id])
 
@@ -190,9 +205,9 @@ class PuzzlesController < ApplicationController
       Clue.find(clue[:id]).update(clue)
     end
 
-    puzzle_params[:cells].each do |cell|
-      Cell.find(cell[:id]).update(cell)
-    end
+    # puzzle_params[:cells].each do |cell|
+    #   Cell.find(cell[:id]).update(cell)
+    # end
 
     puzzle.update(title: puzzle_params[:title], complete: true)
     render json: puzzle
