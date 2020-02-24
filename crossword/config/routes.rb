@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :puzzles, only: [:destroy]
+  resources :puzzles, only: [:show, :destroy]
   resources :solves, only: [:create]
   resources :users, only: [:create]
   resources :favorites, only: [:create, :destroy]

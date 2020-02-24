@@ -44,6 +44,12 @@ class PuzzlesController < ApplicationController
     render json: { solved_puzzles: [], unsolved_puzzles: allPuzzles, user_puzzles: [] }
   end
 
+  def show
+    @puzzle = Puzzle.find(params[:id])
+    puz = PuzzleSerializer.new(@puzzle).to_json
+    render json: puz
+  end
+
   def create
     num = (params[:number]).to_i
     user = params[:newPuzzle][:constructor]
