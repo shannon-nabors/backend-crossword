@@ -24,7 +24,7 @@ class PuzzlesController < ApplicationController
         @saved_puzzles.push(puz)
       elsif user_solves.include?(puz[:id])
         @solved_puzzles.push(puz)
-      else
+      elsif puz[:complete]
         @unsolved_puzzles.push(puz)
       end
     end
