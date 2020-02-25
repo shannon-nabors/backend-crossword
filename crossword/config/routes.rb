@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  resources :puzzles, only: [:show, :destroy]
+  resources :puzzles, only: [:destroy]
   resources :solves, only: [:create]
   resources :users, only: [:create]
   resources :favorites, only: [:create, :destroy]
 
   get "puzzles/user/:id", to: "puzzles#index"
   get "puzzles", to: "puzzles#anonymous_index"
+  get "puzzles/:id", to: "puzzles#show"
   get "solves/user/:id", to: "solves#by_user"
   get "solves/puzzle/:id", to: "solves#by_puzzle"
   get "favorites/user/:id", to: "favorites#by_user"
