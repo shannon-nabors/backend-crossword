@@ -28,6 +28,8 @@ git clone git@github.com:shannon-nabors/backend-crossword.git
 In the crossword directory:
 ```sh
 bundle install
+rails db:create
+rails db:migrate
 rails s
 ```
 Server should be running on localhost:3000 to be compatible with frontend (or change URL in redux/constants in the frontend directory).
