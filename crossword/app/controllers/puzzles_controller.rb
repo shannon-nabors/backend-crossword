@@ -5,7 +5,7 @@ class PuzzlesController < ApplicationController
 
     allPuzzles = Puzzle.all.map do |puz|
       cells_hash = puz.cells.map do |cell|
-        {id: cell.id, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
+        {id: cell.id, circled: cell.circled, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
       end
       {id: puz.id, complete: puz.complete, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash, average: puz.average_solve_time, favorites: puz.total_favs}
     end
@@ -36,7 +36,7 @@ class PuzzlesController < ApplicationController
   def anonymous_index
     allPuzzles = Puzzle.all.map do |puz|
       cells_hash = puz.cells.map do |cell|
-        {id: cell.id, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
+        {id: cell.id, circled: cell.circled, shaded: cell.shaded, number: cell.number, letter: cell.letter, row: cell.row, column: cell.column, clues: cell.clues}
       end
       {id: puz.id,  complete: puz.complete, title: puz.title, correct_letters: puz.correct_letters, across_clues: puz.across_clues, down_clues: puz.down_clues, constructor: puz.constructor, constructor_id: puz.constructor_id, cells: cells_hash, average: puz.average_solve_time, favorites: puz.total_favs}
     end.select {|puz| puz[:complete]}
