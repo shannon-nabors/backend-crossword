@@ -168,7 +168,6 @@ class PuzzlesController < ApplicationController
           ClueCell.create(clue: down_clue, cell: cell)
         end
 
-
       end
 
     end
@@ -233,7 +232,7 @@ class PuzzlesController < ApplicationController
   private
 
   def puzzle_params
-    params.require(:puzzle).permit(:id, :title, cells:[:id, :number, :letter, :shaded, :row, :column], across_clues:[:id, :number, :direction, :content], down_clues:[:id, :number, :direction, :content], constructor:[user:[:name, :email, :username, :id]])
+    params.require(:puzzle).permit(:id, :title, cells:[:id, :number, :letter, :shaded, :circled, :row, :column], across_clues:[:id, :number, :direction, :content], down_clues:[:id, :number, :direction, :content], constructor:[user:[:name, :email, :username, :id]])
   end
 
 end
