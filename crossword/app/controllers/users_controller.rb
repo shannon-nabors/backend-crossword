@@ -7,12 +7,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.create(user_params)
-    render json: @user
-  end
-
-  def login
-    @user = User.find_by(username: params[:username])
-    render json: @user
+    render json: @user.as_json(except: :password_digest)
   end
 
   private

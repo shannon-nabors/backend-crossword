@@ -16,5 +16,8 @@ Rails.application.routes.draw do
   patch "puzzles/letter/:id", to: "puzzles#letter"
   patch "puzzles/clue/:id", to: "puzzles#clue"
   patch "puzzles/enter/:id", to: "puzzles#enter"
-  post "users/login", to: "users#login"
+  # post "users/login", to: "users#login"
+  post "/login", to: "auth#create"
+  get "/verify", to: "auth#verify"
+
 end
